@@ -1,0 +1,48 @@
+/* .logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+} */
+
+/* @keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+* {
+  font-family: 'Poppins';
+  scroll-behavior: smooth;
+}
+
+.styled-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #001d3d;
+  font-family: 'Poppins';
+  padding: 0px 10px;
+}
+
+button.custom-btn {
+  border-color: #001d3d;
+  background-color: transparent;
+  color: #001d3d;
+  font-weight: bold;
+}
+
+button.custom-btn:hover {
+  background-color: #001d3d;
+  color: white;
+  border-color: #001d3d;
+}
+
+button.custom-btn:active {
+  background-color: #414656 !important;
+  color: white !important;
+  border-color: #414656 !important;
+}
