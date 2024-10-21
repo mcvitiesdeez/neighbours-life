@@ -51,11 +51,12 @@ export default function Thread() {
             if (user) {
                 setCurrentUserId(user.uid)
             } else {
-                setCurrentUserId
+                setCurrentUserId(null)
+                navigate('/')
             }
         })
         fetchThreads();
-    }, [])
+    }, [navigate])
 
     return (
         <Container>

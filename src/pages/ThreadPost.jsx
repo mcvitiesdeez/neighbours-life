@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button } from 'react-bootstrap'
 import { AuthContext } from '../components/AuthProvider';
-import PostCard from '../components/PostCard';
 import { useNavigate } from 'react-router-dom';
 
 export default function ThreadPost() {

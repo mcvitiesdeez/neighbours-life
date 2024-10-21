@@ -54,6 +54,11 @@ export default function Auth() {
         }
     }
 
+    const handleLogout = () => {
+        logOut();
+        navigate('/');
+    }
+
     const handleClose = () => setModalShow(null);
     return (
         <div>
@@ -61,7 +66,7 @@ export default function Auth() {
                 currentUser ? (
                     <div style={{ textAlign: 'center' }}>
                         <Navbar.Text>Hi, {currentUser.email}</Navbar.Text><br />
-                        <Button onClick={logOut} variant="link">Logout</Button>
+                        <Button onClick={handleLogout} variant="link">Logout</Button>
                     </div>
                 ) : (
                     <Stack>
