@@ -3,7 +3,7 @@ import { Button, Card, Image, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import UpdateThreadModal from './UpdateThreadModal';
 
-export default function ThreadCard({ thread, onDelete }) {
+export default function ThreadCard({ thread, onDelete, userId }) {
     const { id: threadId, propertydescription: propertyDescription, propertylocation: propertyLocation, propertyname: propertyName, timestamp: timestamp, uid: uid } = thread;
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -34,6 +34,7 @@ export default function ThreadCard({ thread, onDelete }) {
     const handleShowUpdateModal = () => setShowUpdateModal(true);
     const handleCloseUpdateModal = () => setShowUpdateModal(false);
 
+
     return (
         <Card className='mb-3 me-3' key={threadId} style={{ height: '350px' }}>
             <Card.Img variant="top" as={Image} fluid={true} alt="Card Image, Extract image from Firestore DB image" style={{ height: '150px', objectFit: 'cover' }} />
@@ -41,8 +42,8 @@ export default function ThreadCard({ thread, onDelete }) {
                 <Card.Title>{propertyName}</Card.Title>
                 <Card.Subtitle>{propertyLocation}</Card.Subtitle>
                 <Card.Text style={{ height: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{formatDescription(propertyDescription)}</Card.Text>
-                <Button variant="danger" onClick={handleShowDeleteModal} className='me-2'><i className="bi bi-trash-fill"></i></Button>
-                <Button variant="warning" onClick={handleShowUpdateModal}><i className="bi bi-pencil-square"></i></Button>
+                {userId === uid && <Button variant="danger" onClick={handleShowDeleteModal} className='me-2'><i className="bi bi-trash-fill"></i></Button>}
+                {userId === uid && <Button variant="warning" onClick={handleShowUpdateModal}><i className="bi bi-pencil-square"></i></Button>}
             </Card.Body>
 
             {/* delete modal */}

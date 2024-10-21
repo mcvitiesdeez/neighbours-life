@@ -75,7 +75,7 @@ export default function Thread() {
                     {
                         threads.map((thread, index) => (
                             <Col key={index} md={4} className='mb-4'>
-                                <ThreadCard key={thread.id} thread={thread} onDelete={handleConfirmDeleteThread} />
+                                <ThreadCard key={thread.id} thread={thread} onDelete={handleConfirmDeleteThread} userId={currentUserId} />
                             </Col>
                         ))
                     }
