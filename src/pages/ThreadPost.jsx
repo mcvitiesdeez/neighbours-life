@@ -29,6 +29,7 @@ export default function ThreadPost() {
 
     // Add new post to the list
     const handleAddPost = async (e) => {
+        console.log(posts)
         e.preventDefault()
         if (newPost.trim() === "") return;
 
@@ -38,9 +39,10 @@ export default function ThreadPost() {
             timestamp: new Date().toLocaleString(),
             thread_id: thread.id
         };
-        await axios.post(`${BASE_URL}/post`, data)
+        const res = await axios.post(`${BASE_URL}/post`, data)
             .then((response) => {
                 console.log("Success: ", response.data);
+                setPosts((prevPosts) => [...prevPosts, response.data])
             })
             .catch((error) => {
                 console.error("Error: ", error);
@@ -74,7 +76,7 @@ export default function ThreadPost() {
             <Col>
                 {posts.map((post, index) => (
                     <div key={index}>
-                        <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} />
+                        <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} userId={userId} />
                     </div>
                 ))}
                 {posts.length === 0 && <h3>No Post found.</h3>}

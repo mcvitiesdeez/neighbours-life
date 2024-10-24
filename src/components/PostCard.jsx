@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button, Modal } from 'react-bootstrap'
 import UpdatePostModal from './UpdatePostModal';
 
-export default function PostCard({ post, handleConfirmDeletePost }) {
+export default function PostCard({ post, handleConfirmDeletePost, userId }) {
     const { id: id, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
 
     //Update Function
@@ -40,12 +40,16 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
                 <Card.Footer className="text-muted">
                     <div className="d-flex justify-content-between align-items-center">
                         <div>
-                            <Button variant="light">
-                                <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
-                            </Button>
-                            <Button variant="light">
-                                <i className="bi bi-trash" onClick={handleShowDeleteModal}></i>
-                            </Button>
+                            {userId === uid && (
+                                <Button variant="light">
+                                    <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
+                                </Button>
+                            )}
+                            {userId === uid && (
+                                <Button variant="light">
+                                    <i className="bi bi-trash" onClick={handleShowDeleteModal}></i>
+                                </Button>
+                            )}
                         </div>
                         <div className='text-end'>
                             {!edited_flag && <span><i className="bi bi-sticky-fill"></i> Posted: {formatDateWithoutTimezone(timestamp)}</span>}
