@@ -1,7 +1,7 @@
-import { Container, Nav, Navbar, Stack, Button, Modal, Form } from 'react-bootstrap'
-import { BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom'
-import { useState, useEffect, useContext } from 'react';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { useContext, useState } from 'react';
+import { Button, Form, Modal, Navbar, Stack } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthProvider';
 
 export default function Auth() {

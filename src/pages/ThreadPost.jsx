@@ -1,13 +1,14 @@
-import { useState, useContext, useEffect } from 'react';
-import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button } from 'react-bootstrap'
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
+import { Button, Col, Container, Form, Image } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthProvider';
 import PostCard from '../components/PostCard';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function ThreadPost() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { currentUser } = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [newPost, setNewPost] = useState("");
     const BASE_URL = "https://6eb9a79c-ff48-48e3-9fb0-77592fd52711-00-3niw0ix6x7ivx.pike.replit.dev"
@@ -35,6 +36,7 @@ export default function ThreadPost() {
 
         const data = {
             uid: userId,
+            email: currentUser.email,
             post_content: newPost,
             timestamp: new Date().toLocaleString(),
             thread_id: thread.id
@@ -76,7 +78,7 @@ export default function ThreadPost() {
             <Col>
                 {posts.map((post, index) => (
                     <div key={index}>
-                        <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} userId={userId} />
+                        <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} />
                     </div>
                 ))}
                 {posts.length === 0 && <h3>No Post found.</h3>}

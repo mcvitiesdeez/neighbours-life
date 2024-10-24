@@ -1,8 +1,7 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { useNavigate, redirect } from 'react-router-dom';
-import { AuthContext } from '../components/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 import ThreadCard from '../components/ThreadCard';
 import { auth } from "../firebase";
 
@@ -27,13 +26,11 @@ export default function Thread() {
 
     //CreateThread function
     const handleCreateThread = (currentUserId) => {
-        console.log("Insert Thread to DB")
         navigate('/createthread')
         //Navigate to CreateThread.jsx
     }
 
     const handleOpenPost = () => {
-        console.log("Open Post")
         navigate('/threadpost')
     }
 

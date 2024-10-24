@@ -1,9 +1,11 @@
-import { useState, useContext } from 'react';
-import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button, Modal } from 'react-bootstrap'
+import { useContext, useState } from 'react';
+import { Button, Card, Modal } from 'react-bootstrap';
+import { AuthContext } from '../components/AuthProvider';
 import UpdatePostModal from './UpdatePostModal';
 
-export default function PostCard({ post, handleConfirmDeletePost, userId }) {
-    const { id: id, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
+export default function PostCard({ post, handleConfirmDeletePost }) {
+    const { id: id, email: email, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
+    const { currentUser } = useContext(AuthContext);
 
     //Update Function
     const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -35,17 +37,17 @@ export default function PostCard({ post, handleConfirmDeletePost, userId }) {
     return (
         <Card className="mb-1">
             <Card.Body>
-                <Card.Title>{uid}</Card.Title>
+                <Card.Title>{email}</Card.Title>
                 <Card.Text>{post_content}</Card.Text>
                 <Card.Footer className="text-muted">
                     <div className="d-flex justify-content-between align-items-center">
                         <div>
-                            {userId === uid && (
+                            {currentUser.uid === uid && (
                                 <Button variant="light">
                                     <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
                                 </Button>
                             )}
-                            {userId === uid && (
+                            {currentUser.uid === uid && (
                                 <Button variant="light">
                                     <i className="bi bi-trash" onClick={handleShowDeleteModal}></i>
                                 </Button>
