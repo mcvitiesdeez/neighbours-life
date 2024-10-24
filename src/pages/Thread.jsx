@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, redirect } from 'react-router-dom';
 import { AuthContext } from '../components/AuthProvider';
 import ThreadCard from '../components/ThreadCard';
 import { auth } from "../firebase";

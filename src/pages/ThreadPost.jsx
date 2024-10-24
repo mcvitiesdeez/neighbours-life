@@ -1,32 +1,35 @@
 import { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button } from 'react-bootstrap'
 import { AuthContext } from '../components/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import PostCard from '../components/PostCard';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ThreadPost() {
     const navigate = useNavigate();
-    const [posts, setPosts] = useState([
-        { id: 1, username: "ListenToTheWind", content: "Wah stim oh layan lonely auntie", timestamp: "11:01 AM" },
-        { id: 2, username: "hihihehe", content: "Like that only?", timestamp: "11:01 AM" }
-    ]);
-    const BASE_URL = "https://3e6cea79-5f7c-478c-ab94-afdfe63a2cbe-00-1rphpctmxz8hn.pike.replit.dev/"
-    const { currentUser } = useContext(AuthContext);
-
+    const location = useLocation();
+    const [posts, setPosts] = useState([]);
     const [newPost, setNewPost] = useState("");
+    const BASE_URL = "https://6eb9a79c-ff48-48e3-9fb0-77592fd52711-00-3niw0ix6x7ivx.pike.replit.dev"
 
-    //Fetch Posts from DB based on propertyId
-    // const fetchPosts = async() => {
-    //     try{
-    //         const res = await.axios.get(`${BASE_URL}/posts/${propId}`);
-    //         setPosts(res.data)
-    //     } catch(error){
-    //         console.error("Error: ", error);
-    //     }
-    // }
+    const { thread, userId } = location.state || {};
 
-    // useEffect(() => {
-    //     fetchPosts()
-    // }, [])
+    // console.log(thread)
+    // console.log(userId)
+
+    const fetchPosts = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}/post/${thread.id}`);
+            setPosts(res.data)
+
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchPosts()
+    })
 
     // Add new post to the list
     const handleAddPost = (e) => {
@@ -35,7 +38,7 @@ export default function ThreadPost() {
 
         const newEntry = {
             id: posts.length + 1,
-            username: currentUser.email, // Ideally, you'd fetch this dynamically
+            //username: currentUser.email, // Ideally, you'd fetch this dynamically
             content: newPost,
             timestamp: new Date().toLocaleTimeString(),
         };
@@ -43,19 +46,13 @@ export default function ThreadPost() {
         setNewPost("");
     }
 
-    useEffect(() => {
-        if (!currentUser) {
-            navigate('/')
-        }
-    })
-
 
     return (
         <Container>
-            <h1>Property.Title</h1>
+            <h1>{thread.propertyname}</h1>
             <Image alt="Image of property" />
-            <h3>Property.Location</h3>
-            <p>Property.Description</p>
+            <h3>{thread.propertylocation}</h3>
+            <p>{thread.propertydescription}</p>
 
             {/* Post */}
             <Col>
