@@ -33,7 +33,7 @@ export default function UpdateThreadModal({
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Body>
-                <h1>Add a new property</h1>
+                <h1>Update property</h1>
                 <Form>
                     <Form.Group className="mb-3" controlId="formPropertyName">
                         <Form.Label>Property Title:</Form.Label>

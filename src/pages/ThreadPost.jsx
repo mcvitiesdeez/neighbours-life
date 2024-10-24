@@ -85,7 +85,8 @@ export default function ThreadPost() {
                 <Form.Group controlId="postContent">
                     <Form.Label>Add a new post</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea"
+                        rows={3}
                         placeholder="Type your message here..."
                         value={newPost}
                         onChange={(e) => setNewPost(e.target.value)}

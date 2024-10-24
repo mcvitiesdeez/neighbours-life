@@ -1,9 +1,8 @@
 import { useState, useContext } from 'react';
 import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button, Modal } from 'react-bootstrap'
-// import UpdatePostModal from './UpdatePostModal';
+import UpdatePostModal from './UpdatePostModal';
 
 export default function PostCard({ post, handleConfirmDeletePost }) {
-    console.log(post)
     const { id: id, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
 
     //Update Function
@@ -17,9 +16,7 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
 
     //Delete
     const handleConfirmDelete = () => {
-        console.log("1")
         handleConfirmDeletePost(id);
-        console.log("2")
         setShowDeleteModal(false);
     }
 
@@ -77,6 +74,9 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
                         </Button>
                     </Modal.Body>
                 </Modal>
+
+                {/* Update modal */}
+                <UpdatePostModal show={showUpdateModal} handleClose={handleCloseUpdateModal} post={post} />
             </Card.Body>
         </Card>
     )
