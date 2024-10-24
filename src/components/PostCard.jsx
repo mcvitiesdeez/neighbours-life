@@ -1,20 +1,39 @@
 import { useState, useContext } from 'react';
-import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Stack, Nav, Card, Image, Form, Button, Modal } from 'react-bootstrap'
 // import UpdatePostModal from './UpdatePostModal';
 
-export default function PostCard(post) {
-    const { id: id, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post.post;
+export default function PostCard({ post, handleConfirmDeletePost }) {
+    console.log(post)
+    const { id: id, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
 
     //Update Function
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleShowUpdateModal = () => setShowUpdateModal(true);
     const handleCloseUpdateModal = () => setShowUpdateModal(false);
+    const handleShowDeleteModal = () => setShowDeleteModal(true);
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
 
     //Delete
-    const handleDelete = () => {
-        console.log("Delete Post from DB")
+    const handleConfirmDelete = () => {
+        console.log("1")
+        handleConfirmDeletePost(id);
+        console.log("2")
+        setShowDeleteModal(false);
     }
+
+    const formatDateWithoutTimezone = (isoString) => {
+        const [datePart, timePart] = isoString.split('T');
+        const [year, month, day] = datePart.split('-');
+        let [hour, minute] = timePart.split(':');
+
+        hour = parseInt(hour, 10);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12;
+        return `${year}-${month}-${day}, ${hour}:${minute}${ampm}`;
+    };
+
 
     return (
         <Card className="mb-1">
@@ -22,20 +41,42 @@ export default function PostCard(post) {
                 <Card.Title>{uid}</Card.Title>
                 <Card.Text>{post_content}</Card.Text>
                 <Card.Footer className="text-muted">
-                    <div>{edited_flag ? timestamp : updated_timestamp}</div>
-                    <div>
-                        <Button variant="light">
-                            <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
-                        </Button>
-                        <Button variant="light">
-                            <i className="bi bi-trash" onClick={handleDelete}></i>
-                        </Button>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <Button variant="light">
+                                <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
+                            </Button>
+                            <Button variant="light">
+                                <i className="bi bi-trash" onClick={handleShowDeleteModal}></i>
+                            </Button>
+                        </div>
+                        <div className='text-end'>
+                            {!edited_flag && <span><i className="bi bi-sticky-fill"></i> Posted: {formatDateWithoutTimezone(timestamp)}</span>}
+                            {edited_flag && <span><i className="bi bi-pencil-fill"></i> Edited: {formatDateWithoutTimezone(updated_timestamp)}</span>}
+                        </div>
                     </div>
                 </Card.Footer>
+
                 {/* <UpdatePostModal
                     show={showUpdateModal}
                     handleClose={handleCloseUpdateModal}
                 /> */}
+
+                {/* delete modal */}
+                <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+                    <Modal.Body>
+                        <h2 className="mb-4" style={{ fontWeight: "bold" }}>
+                            Delete this thread?
+                        </h2>
+                        <p>Are you sure you want to delete this thread?</p>
+                        <Button className='me-2' variant="danger" onClick={handleConfirmDelete}>
+                            Yes, delete this thread
+                        </Button>
+                        <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                            No, cancel
+                        </Button>
+                    </Modal.Body>
+                </Modal>
             </Card.Body>
         </Card>
     )

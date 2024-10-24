@@ -14,14 +14,10 @@ export default function ThreadPost() {
 
     const { thread, userId } = location.state || {};
 
-    // console.log(thread)
-    // console.log(userId)
-
     const fetchPosts = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/post/${thread.id}`);
             setPosts(res.data)
-
         } catch (error) {
             console.error("Error: ", error);
         }
@@ -29,21 +25,41 @@ export default function ThreadPost() {
 
     useEffect(() => {
         fetchPosts()
-    })
+    }, [])
 
     // Add new post to the list
-    const handleAddPost = (e) => {
-        e.preventDefault();
+    const handleAddPost = async (e) => {
+        e.preventDefault()
         if (newPost.trim() === "") return;
 
-        const newEntry = {
-            id: posts.length + 1,
-            //username: currentUser.email, // Ideally, you'd fetch this dynamically
-            content: newPost,
-            timestamp: new Date().toLocaleTimeString(),
+        const data = {
+            uid: userId,
+            post_content: newPost,
+            timestamp: new Date().toLocaleString(),
+            thread_id: thread.id
         };
-        setPosts([newEntry, ...posts]);
+        await axios.post(`${BASE_URL}/post`, data)
+            .then((response) => {
+                console.log("Success: ", response.data);
+            })
+            .catch((error) => {
+                console.error("Error: ", error);
+            })
         setNewPost("");
+    }
+
+    const clearPostForm = () => {
+        setNewPost("");
+    }
+
+    //Delete post
+    const handleConfirmDeletePost = async (postId) => {
+        try {
+            await axios.delete(`${BASE_URL}/thread/${postId}`)
+            setPosts((prevItems) => prevItems.filter((post) => post.id !== postId));
+        } catch (error) {
+            console.error("Error: ", error);
+        }
     }
 
 
@@ -56,14 +72,15 @@ export default function ThreadPost() {
 
             {/* Post */}
             <Col>
-                {posts.map((post) => (
-                    <div key={post.id}>
-                        <PostCard post={post} />
+                {posts.map((post, index) => (
+                    <div key={index}>
+                        <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} />
                     </div>
                 ))}
+                {posts.length === 0 && <h3>No Post found.</h3>}
             </Col>
             {/* Form to add new post */}
-            <Form onSubmit={handleAddPost}>
+            <Form onSubmit={handleAddPost} className='mt-5'>
                 {/* <Form> */}
                 <Form.Group controlId="postContent">
                     <Form.Label>Add a new post</Form.Label>
@@ -74,8 +91,11 @@ export default function ThreadPost() {
                         onChange={(e) => setNewPost(e.target.value)}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="mt-3">
+                <Button variant="primary" type="submit" className="mt-3 me-1">
                     Post
+                </Button>
+                <Button variant="secondary" onClick={clearPostForm} className="mt-3">
+                    Clear
                 </Button>
             </Form>
 
