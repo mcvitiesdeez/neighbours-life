@@ -59,8 +59,10 @@ export default function ThreadPost() {
     //Delete post
     const handleConfirmDeletePost = async (postId) => {
         try {
-            await axios.delete(`${BASE_URL}/thread/${postId}`)
+            console.log(postId)
+            await axios.delete(`${BASE_URL}/post/${postId}`)
             setPosts((prevItems) => prevItems.filter((post) => post.id !== postId));
+
         } catch (error) {
             console.error("Error: ", error);
         }
