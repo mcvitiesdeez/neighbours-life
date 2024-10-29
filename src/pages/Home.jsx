@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap'
+import { Carousel, Container } from 'react-bootstrap'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -22,25 +22,17 @@ export default function Home() {
         <Container>
             <h1>Home</h1>
             {/* CarouselComponentDoneLater */}
-            <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="true">
-                <div className="carousel-inner">
-                    {
-                        images.map((image, index) => (
-                            <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                                <img src={image.imageurl} className="d-block w-100" style={{ borderRadius: '15px', border: '5px solid white' }} />
-                            </div>
-                        ))
-                    }
-                </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                </button>
-            </div>
+            <Carousel>
+                {
+                    images.map((image, index) => (
+                        <Carousel.Item key={index}>
+                            <img src={image.imageurl} className="d-block w-100" style={{ borderRadius: '15px', border: '5px solid white', width: '100%', height: 'auto', objectFit: 'cover', maxHeight: '600px' }} />
+                        </Carousel.Item>
+                    ))
+                }
+            </Carousel>
+            <br />
+            <p>Neighbours is a social platform where you can chat about property details, get help with buying a unit, and discuss facility issues. Our simple threads and cards format makes it easy to connect and share information with others in the community. Join us to get advice and support as you navigate the world of real estate!</p>
         </Container>
     )
 }
