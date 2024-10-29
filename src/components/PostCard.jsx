@@ -1,15 +1,23 @@
 import { useContext, useState } from 'react';
-import { Button, Card, Modal } from 'react-bootstrap';
+import { Button, Card, Modal, Form } from 'react-bootstrap';
 import { AuthContext } from '../components/AuthProvider';
 import UpdatePostModal from './UpdatePostModal';
+import axios from 'axios';
 
 export default function PostCard({ post, handleConfirmDeletePost }) {
     const { id: id, email: email, post_content: post_content, edited_flag: edited_flag, timestamp: timestamp, updated_timestamp: updated_timestamp, uid: uid } = post;
     const { currentUser } = useContext(AuthContext);
 
+    //API Endpoint
+    const BASE_URL = import.meta.env.VITE_BASE_URL
+
     //Update Function
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const [postContent, setPostContent] = useState(post.post_content);
+    const [newPostContent, setNewPostContent] = useState(post.post_content);
+    const [editedFlag, setEditedFlag] = useState(post.edited_flag)
 
     const handleShowUpdateModal = () => setShowUpdateModal(true);
     const handleCloseUpdateModal = () => setShowUpdateModal(false);
@@ -33,12 +41,25 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
         return `${year}-${month}-${day}, ${hour}:${minute}${ampm}`;
     };
 
+    const handleUpdatePost = async () => {
+        const data = {
+            post_content: newPostContent,
+            updated_timestamp: new Date().toLocaleString()
+        }
+        await axios.put(`${BASE_URL}/post/${post.id}`, data)
+            .then((response) => { console.log("Success: ", response.data) })
+            .catch((error) => { console.error("Error: ", error) })
+        handleCloseUpdateModal();
+        setEditedFlag(true)
+        setPostContent(newPostContent)
+    }
+
 
     return (
         <Card className="mb-1">
             <Card.Body>
                 <Card.Title>{email}</Card.Title>
-                <Card.Text>{post_content}</Card.Text>
+                <Card.Text>{postContent}</Card.Text>
                 <Card.Footer className="text-muted">
                     <div className="d-flex justify-content-between align-items-center">
                         <div>
@@ -54,8 +75,8 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
                             )}
                         </div>
                         <div className='text-end'>
-                            {!edited_flag && <span><i className="bi bi-sticky-fill"></i> Posted: {formatDateWithoutTimezone(timestamp)}</span>}
-                            {edited_flag && <span><i className="bi bi-pencil-fill"></i> Edited: {formatDateWithoutTimezone(updated_timestamp)}</span>}
+                            {!editedFlag && <span><i className="bi bi-sticky-fill"></i> Posted: {formatDateWithoutTimezone(timestamp)}</span>}
+                            {editedFlag && <span><i className="bi bi-pencil-fill"></i> Edited: {formatDateWithoutTimezone(timestamp)}</span>}
                         </div>
                     </div>
                 </Card.Footer>
@@ -77,7 +98,29 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
                 </Modal>
 
                 {/* Update modal */}
-                <UpdatePostModal show={showUpdateModal} handleClose={handleCloseUpdateModal} post={post} />
+                <Modal show={showUpdateModal} onHide={handleCloseUpdateModal} centered>
+                    <Modal.Body>
+                        <h1>Update Post</h1>
+                        <Form>
+                            <Form.Group controlId="postContent">
+                                <Form.Label>Add a new post</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    placeholder="Type your message here..."
+                                    value={newPostContent}
+                                    onChange={(e) => setNewPostContent(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Button className="mt-3 me-2" variant="primary" onClick={handleUpdatePost}>
+                                Submit
+                            </Button>
+                            <Button className="mt-3" variant="danger" onClick={handleCloseUpdateModal}>
+                                Cancel
+                            </Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
             </Card.Body>
         </Card>
     )
