@@ -13,7 +13,7 @@ export default function Thread() {
     const navigate = useNavigate();
 
     //API Endpoint
-    const BASE_URL = "https://ffca51ee-54a7-413b-bde5-598ed309fd45-00-17425dkhg8k6s.pike.replit.dev"
+    const BASE_URL = import.meta.env.VITE_BASE_URL
 
     const fetchThreads = async () => {
         try {
@@ -60,7 +60,7 @@ export default function Thread() {
             <h1>Thread</h1>
             <Container className='mt-5'>
                 <Row xs={1} md={3} className='g-3'>
-                    <Col md={4}>
+                    <Col md={6} lg={4}>
                         <Card className='mb-3 me-3' style={{ height: '395px' }}>
                             <Card.Header style={{ fontSize: '140px', textAlign: 'center', cursor: 'pointer' }} onClick={handleCreateThread}>+</Card.Header>
                             <Card.Body>
@@ -72,7 +72,7 @@ export default function Thread() {
                     </Col>
                     {
                         threads.map((thread, index) => (
-                            <Col key={index} md={4} className='mb-4'>
+                            <Col key={index} md={6} lg={4} className='mb-4'>
                                 <ThreadCard key={thread.id} thread={thread} onDelete={handleConfirmDeleteThread} userId={currentUserId} />
                             </Col>
                         ))

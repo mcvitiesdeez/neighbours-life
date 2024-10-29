@@ -45,7 +45,7 @@ export default function ThreadCard({ thread, onDelete, userId }) {
 
     return (
         <Card className='mb-3 me-3' key={threadId} style={{ height: '395px' }}>
-            <Card.Img variant="top" src={imageurl} as={Image} fluid={true} alt="Card Image, Extract image from Firestore DB image" style={{ height: '150px', objectFit: 'cover', cursor: 'pointer' }} onClick={handleAccessThread} />
+            <Card.Img variant="top" src={imageurl} as={Image} fluid={true} alt="Property Image" style={{ height: '150px', objectFit: 'cover', cursor: 'pointer' }} onClick={handleAccessThread} />
             <Card.Body>
                 <Card.Title>{propertyName}</Card.Title>
                 <Card.Subtitle>{propertyLocation}</Card.Subtitle>

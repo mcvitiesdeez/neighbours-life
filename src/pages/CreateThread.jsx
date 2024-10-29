@@ -21,7 +21,7 @@ export default function CreateThread() {
     const storage = getStorage();
 
     //API Endpoint
-    const BASE_URL = "https://ffca51ee-54a7-413b-bde5-598ed309fd45-00-17425dkhg8k6s.pike.replit.dev"
+    const BASE_URL = import.meta.env.VITE_BASE_URL
 
     const handleImageChange = (e) => {
         setImageFile(e.target.files[0]); // Set the selected image file

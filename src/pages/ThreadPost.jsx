@@ -11,7 +11,7 @@ export default function ThreadPost() {
     const { currentUser } = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [newPost, setNewPost] = useState("");
-    const BASE_URL = "https://ffca51ee-54a7-413b-bde5-598ed309fd45-00-17425dkhg8k6s.pike.replit.dev"
+    const BASE_URL = import.meta.env.VITE_BASE_URL
 
     const { thread, userId } = location.state || {};
 
@@ -72,7 +72,7 @@ export default function ThreadPost() {
 
     return (
         <Container>
-            <Row>
+            <Row xs={12}>
                 <Col>
                     <h1>{thread.propertyname}</h1>
                     <br />
@@ -80,14 +80,14 @@ export default function ThreadPost() {
                     <br />
                     <p>{thread.propertydescription}</p>
                 </Col>
-                <Col>
+                <Col className='d-flex justify-content-center'>
                     <Image alt="Image of property" src={thread.imageurl} style={{ width: '400px', height: 'auto', borderRadius: '15px', border: '5px solid white' }} />
                 </Col>
             </Row>
 
 
             {/* Post */}
-            <Col>
+            <Col xs={12} className='mt-5'>
                 {posts.map((post, index) => (
                     <div key={index}>
                         <PostCard key={post.id} post={post} handleConfirmDeletePost={handleConfirmDeletePost} />

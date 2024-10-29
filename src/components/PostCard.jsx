@@ -60,11 +60,6 @@ export default function PostCard({ post, handleConfirmDeletePost }) {
                     </div>
                 </Card.Footer>
 
-                {/* <UpdatePostModal
-                    show={showUpdateModal}
-                    handleClose={handleCloseUpdateModal}
-                /> */}
-
                 {/* delete modal */}
                 <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
                     <Modal.Body>
