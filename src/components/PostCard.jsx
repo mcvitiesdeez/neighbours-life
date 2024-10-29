@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { Button, Card, Modal, Form } from 'react-bootstrap';
 import { AuthContext } from '../components/AuthProvider';
-import UpdatePostModal from './UpdatePostModal';
 import axios from 'axios';
 
 export default function PostCard({ post, handleConfirmDeletePost }) {

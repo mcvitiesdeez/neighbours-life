@@ -5,19 +5,6 @@ import { useEffect, useState } from 'react';
 export default function Home() {
     const [images, setImages] = useState([]);
 
-    // //API Endpoint
-    // const BASE_URL = import.meta.env.VITE_BASE_URL
-
-    // //Fetch images
-    // const fetchImages = async () => {
-    //     try {
-    //         const res = await axios.get(`${BASE_URL}/images`)
-    //         setImages(res.data)
-    //     } catch (error) {
-    //         console.error("Error: ", error);
-    //     }
-    // }
-
     useEffect(() => {
         const BASE_URL = import.meta.env.VITE_BASE_URL
         const fetchImages = async () => {
