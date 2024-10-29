@@ -8,6 +8,7 @@ import CreateThread from './pages/CreateThread'
 import Home from './pages/Home'
 import Thread from './pages/Thread'
 import ThreadPost from './pages/ThreadPost'
+import NavBarLogo from './assets/Brands_text_1.webp'
 
 export function Layout() {
 
@@ -15,7 +16,7 @@ export function Layout() {
     <>
       <Navbar expand="lg">
         <Container>
-          <Navbar.Brand as={Link} to={'/'}><img src="src/assets/Brands_text_1.webp" alt="Brands Text" /></Navbar.Brand>
+          <Navbar.Brand as={Link} to={'/'}><img src={NavBarLogo} alt="Brands Text" /></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">

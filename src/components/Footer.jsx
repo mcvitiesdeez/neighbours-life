@@ -1,5 +1,6 @@
 import { Container, Row, Col, Stack, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import FooterLogo from '../assets/Neighbour_Brand.webp'
 
 export default function Footer() {
     return (
@@ -7,7 +8,7 @@ export default function Footer() {
             <Container>
                 <Row>
                     <Col style={{ display: 'grid', placeItems: 'center' }}>
-                        <img src="/src/assets/Neighbour_Brand.webp" alt="Neighbours Logo" width="300px" height="300px" />
+                        <img src={FooterLogo} alt="Neighbours Logo" width="300px" height="300px" />
                     </Col>
                     <Col>
                         <Stack direction="horizontal" gap={2} style={{ placeItems: 'center' }}>
