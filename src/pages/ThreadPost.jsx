@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { Button, Col, Container, Form, Image } from 'react-bootstrap';
+import { Button, Col, Container, Form, Image, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthProvider';
 import PostCard from '../components/PostCard';
@@ -30,7 +30,7 @@ export default function ThreadPost() {
 
     // Add new post to the list
     const handleAddPost = async (e) => {
-        console.log(posts)
+        console.log(newPost)
         e.preventDefault()
         if (newPost.trim() === "") return;
 
@@ -41,6 +41,7 @@ export default function ThreadPost() {
             timestamp: new Date().toLocaleString(),
             thread_id: thread.id
         };
+        console.log(data)
         const res = await axios.post(`${BASE_URL}/post`, data)
             .then((response) => {
                 console.log("Success: ", response.data);
@@ -71,10 +72,19 @@ export default function ThreadPost() {
 
     return (
         <Container>
-            <h1>{thread.propertyname}</h1>
-            <Image alt="Image of property" />
-            <h3>{thread.propertylocation}</h3>
-            <p>{thread.propertydescription}</p>
+            <Row>
+                <Col>
+                    <h1>{thread.propertyname}</h1>
+                    <br />
+                    <h3>{thread.propertylocation}</h3>
+                    <br />
+                    <p>{thread.propertydescription}</p>
+                </Col>
+                <Col>
+                    <Image alt="Image of property" src={thread.imageurl} style={{ width: '400px', height: 'auto', borderRadius: '15px', border: '5px solid white' }} />
+                </Col>
+            </Row>
+
 
             {/* Post */}
             <Col>

@@ -4,14 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import UpdateThreadModal from './UpdateThreadModal';
 
 export default function ThreadCard({ thread, onDelete, userId }) {
-    const { id: threadId, propertydescription: propertyDescription, propertylocation: propertyLocation, propertyname: propertyName, timestamp: timestamp, uid: uid } = thread;
+    const { id: threadId, propertydescription: propertyDescription, propertylocation: propertyLocation, propertyname: propertyName, timestamp: timestamp, uid: uid, imageurl: imageurl } = thread;
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const navigate = useNavigate();
     //Delete Modal
     const handleShowDeleteModal = () => setShowDeleteModal(true);
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
-
     //Format propertyDescription
     const formatDescription = (description) => {
         description = description.replace(/\w\S*/g, function (txt) {
@@ -45,14 +44,18 @@ export default function ThreadCard({ thread, onDelete, userId }) {
 
 
     return (
-        <Card className='mb-3 me-3' key={threadId} style={{ height: '350px' }}>
-            <Card.Img variant="top" as={Image} fluid={true} alt="Card Image, Extract image from Firestore DB image" style={{ height: '150px', objectFit: 'cover', cursor: 'pointer' }} onClick={handleAccessThread} />
+        <Card className='mb-3 me-3' key={threadId} style={{ height: '395px' }}>
+            <Card.Img variant="top" src={imageurl} as={Image} fluid={true} alt="Card Image, Extract image from Firestore DB image" style={{ height: '150px', objectFit: 'cover', cursor: 'pointer' }} onClick={handleAccessThread} />
             <Card.Body>
                 <Card.Title>{propertyName}</Card.Title>
                 <Card.Subtitle>{propertyLocation}</Card.Subtitle>
                 <Card.Text style={{ height: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{formatDescription(propertyDescription)}</Card.Text>
-                {userId === uid && <Button variant="danger" onClick={handleShowDeleteModal} className='me-2'><i className="bi bi-trash-fill"></i></Button>}
-                {userId === uid && <Button variant="warning" onClick={handleShowUpdateModal}><i className="bi bi-pencil-square"></i></Button>}
+
+                {userId === uid &&
+                    (<Card.Footer>
+                        <Button variant="danger" onClick={handleShowDeleteModal} className='me-2'><i className="bi bi-trash-fill"></i></Button>
+                        <Button variant="warning" onClick={handleShowUpdateModal}><i className="bi bi-pencil-square"></i></Button>
+                    </Card.Footer>)}
             </Card.Body>
 
             {/* delete modal */}

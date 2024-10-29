@@ -61,7 +61,7 @@ export default function Thread() {
             <Container className='mt-5'>
                 <Row xs={1} md={3} className='g-3'>
                     <Col md={4}>
-                        <Card className='mb-3 me-3' style={{ height: '350px' }}>
+                        <Card className='mb-3 me-3' style={{ height: '395px' }}>
                             <Card.Header style={{ fontSize: '140px', textAlign: 'center', cursor: 'pointer' }} onClick={handleCreateThread}>+</Card.Header>
                             <Card.Body>
                                 <Card.Title>Create a new thread</Card.Title>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { useNavigate, redirect } from 'react-router-dom';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth } from "../firebase";
 
 
@@ -10,32 +11,49 @@ export default function CreateThread() {
     const [propertyLocation, setPropertyLocation] = useState("");
     const [propertyDescription, setPropertyDescription] = useState("");
     const [currentUserId, setCurrentUserId] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const [imageUrl, setImageUrl] = useState("")
 
     //Navigate function
     const navigate = useNavigate();
 
+    //Initialize Firebase Storage
+    const storage = getStorage();
+
     //API Endpoint
     const BASE_URL = "https://ffca51ee-54a7-413b-bde5-598ed309fd45-00-17425dkhg8k6s.pike.replit.dev"
 
-    const handleCreateThread = async () => {
-        const data = {
-            uid: currentUserId,
-            propertyName: propertyName,
-            propertyLocation: propertyLocation,
-            propertyDescription: propertyDescription,
-            timestamp: new Date().toLocaleString()
-        }
+    const handleImageChange = (e) => {
+        setImageFile(e.target.files[0]); // Set the selected image file
+    };
 
-        await axios.post(`${BASE_URL}/thread`, data)
-            .then((response) => {
-                console.log("Success: ", response.data);
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-            })
-        //Data Submit: User UID, Property Name, Property Location, Property Description, Timestamp created
-        //Submit to Neon DB
-        navigate('/thread');
+    const handleCreateThread = async () => {
+        if (imageFile) {
+            const storageRef = ref(storage, `images/${imageFile.name}`);
+            await uploadBytes(storageRef, imageFile);
+            const downloadUrl = await getDownloadURL(storageRef);
+            setImageUrl(downloadUrl)
+
+            const data = {
+                uid: currentUserId,
+                propertyName: propertyName,
+                propertyLocation: propertyLocation,
+                propertyDescription: propertyDescription,
+                timestamp: new Date().toLocaleString(),
+                imageurl: downloadUrl
+            }
+
+            await axios.post(`${BASE_URL}/thread`, data)
+                .then((response) => {
+                    console.log("Success: ", response.data);
+                })
+                .catch((error) => {
+                    console.error("Error: ", error);
+                })
+            //Data Submit: User UID, Property Name, Property Location, Property Description, Timestamp created
+            //Submit to Neon DB
+            navigate('/thread');
+        }
     }
 
     const cancelCreation = () => {
@@ -43,6 +61,8 @@ export default function CreateThread() {
         setPropertyName("")
         setPropertyLocation("")
         setPropertyDescription("")
+        setImageFile(null)
+        setImageUrl("")
         navigate('/thread')
     }
 
@@ -90,6 +110,10 @@ export default function CreateThread() {
                         value={propertyDescription}
                         onChange={(e) => setPropertyDescription(e.target.value)}
                     />
+                </Form.Group>
+                <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>Upload Image</Form.Label>
+                    <Form.Control type="file" onChange={handleImageChange} />
                 </Form.Group>
                 <Button className="mt-3 me-2" variant="primary" onClick={handleCreateThread}>
                     Submit
